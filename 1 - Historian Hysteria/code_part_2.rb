@@ -9,9 +9,10 @@ ids.each do |id|
   list2 << id2
 end
 
-similarity_scores = list1.map do |l1_id|
-  list2_occurrences = list2.count(l1_id)
-  l1_id * list2_occurrences
+list2_counts = list2.tally
+
+similarity_score = list1.sum do |num|
+  num * (list2_counts[num] || 0)
 end
 
-puts similarity_scores.sum
+puts similarity_score
