@@ -51,11 +51,9 @@ def safe?(levels)
   true
 end
 
-total_safe = 0
-
-reports.each do |report|
-  levels     = report.split.map(&:to_i)
-  total_safe += 1 if safe?(levels)
+total_safe = reports.count do |report|
+  levels = report.split.map(&:to_i)
+  safe?(levels)
 end
 
 puts total_safe
