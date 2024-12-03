@@ -1,4 +1,4 @@
-ids = File.readlines('./1 - Historian Hysteria/input')
+ids = File.readlines(File.join(File.dirname(__FILE__), './input'))
 
 list1 = []
 list2 = []

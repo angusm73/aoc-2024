@@ -1,4 +1,4 @@
-reports = File.readlines('./2 - Red-Nosed Reports/input')
+reports = File.readlines(File.join(File.dirname(__FILE__), './input'))
 
 class UnsafeLevels < StandardError; end
 
