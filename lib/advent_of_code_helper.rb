@@ -8,6 +8,7 @@ Dotenv.load
 Dotenv.require_keys('USER_AGENT', 'AOC_SESSION')
 
 class NotReadyError < StandardError; end
+class NotFoundError < StandardError; end
 
 # Helpers
 module AdventOfCodeHelper
@@ -19,6 +20,7 @@ module AdventOfCodeHelper
   SOLUTION_STUB = "input = File.read(File.join(File.dirname(__FILE__), './input'))\n\nputs input\n"
 
   NOT_READY_REGEX = /before it unlocks/.freeze
+  NOT_FOUND_REGEX = /404 Not Found/.freeze
 
   def download_input(year, day)
     uri      = URI.parse(format(INPUT_DOWNLOAD_URL, year, day))
@@ -32,8 +34,10 @@ module AdventOfCodeHelper
     response = get(uri)
 
     raise NotReadyError, 'Challenge is not ready yet' if response.body.match(NOT_READY_REGEX)
+    raise NotFoundError, 'Challenge does not exist' if response.body.match(NOT_FOUND_REGEX)
 
-    response.body.match(/--- (.*) ---/)[1].split(': ').last
+    heading_matches = response.body.match(/--- (.*) ---/)
+    heading_matches[1].split(': ').last if heading_matches
   end
 
   private
