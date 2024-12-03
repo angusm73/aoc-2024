@@ -24,6 +24,20 @@ class AdventOfCodeCLI < Thor
     File.write("#{path}/part1.rb", SOLUTION_STUB)
   end
 
+  desc 'runner DAY PART', 'Run solution for advent of code'
+  def runner(day = Time.now.day, part = 1)
+    year = options[:year]
+    name = challenge_name(year, day)
+    path = "#{year}/#{day} - #{name}"
+    file = "./#{path}/part#{part}.rb"
+
+    puts "Running #{day} (#{year}) - #{name} (pt #{part})"
+
+    raise NotFoundError, "#{file} does not exist" unless File.exist?(file)
+
+    puts `ruby "#{file}"`
+  end
+
   def self.exit_on_failure?
     true
   end
