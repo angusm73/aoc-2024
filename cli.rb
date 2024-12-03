@@ -17,7 +17,7 @@ class AdventOfCodeCLI < Thor
     input = download_input(year, day)
     path  = "#{year}/#{day} - #{name}"
 
-    puts "Downloading day #{day} - #{name}"
+    puts "Downloading day #{day} (#{year}) - #{name}"
 
     FileUtils.mkdir_p(path)
     File.write("#{path}/input", input)
@@ -31,7 +31,7 @@ class AdventOfCodeCLI < Thor
     path = "#{year}/#{day} - #{name}"
     file = "./#{path}/part#{part}.rb"
 
-    puts "Running #{day} (#{year}) - #{name} (pt #{part})"
+    puts "Running day #{day} (#{year}) - #{name} (pt #{part})"
 
     raise NotFoundError, "#{file} does not exist" unless File.exist?(file)
 
