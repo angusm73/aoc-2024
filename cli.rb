@@ -21,7 +21,7 @@ class AdventOfCodeCLI < Thor
 
     FileUtils.mkdir_p(path)
     File.write("#{path}/input", input)
-    File.write("#{path}/part1.rb", SOLUTION_STUB)
+    File.write("#{path}/part1.rb", SOLUTION_STUB) unless File.exist?("#{path}/part1.rb")
   end
 
   desc 'runner DAY PART', 'Run solution for advent of code'
