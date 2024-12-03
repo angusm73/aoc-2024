@@ -17,7 +17,7 @@ module AdventOfCodeHelper
   AOC_USER_AGENT     = ENV['USER_AGENT']
   AOC_COOKIE         = "session=#{ENV['AOC_SESSION']}"
 
-  SOLUTION_STUB = "input = File.read(File.join(File.dirname(__FILE__), './input'))\n\nputs input\n"
+  SOLUTION_STUB = "input = File.readlines(File.join(File.dirname(__FILE__), './input'))\n\nputs input\n"
 
   NOT_READY_REGEX = /before it unlocks/.freeze
   NOT_FOUND_REGEX = /404 Not Found/.freeze
