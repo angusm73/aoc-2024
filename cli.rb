@@ -8,8 +8,11 @@ require './lib/advent_of_code_helper'
 class AdventOfCodeCLI < Thor
   include AdventOfCodeHelper
 
-  desc 'download YEAR DAY', 'Download daily advent of code'
-  def download(year = Time.now.year, day = Time.now.day)
+  class_option :year, type: :numeric, default: Time.now.year
+
+  desc 'download DAY', 'Download daily advent of code'
+  def download(day = Time.now.day)
+    year  = options[:year]
     name  = challenge_name(year, day)
     input = download_input(year, day)
     path  = "#{year}/#{day} - #{name}"
