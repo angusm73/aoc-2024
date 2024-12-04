@@ -7,86 +7,33 @@ input.each do |line|
   grid << line.chomp.chars
 end
 
-WIDTH    = grid.first.count
+WIDTH    = grid[0].count
 HEIGHT   = grid.count
-XMAS     = %w[X M A S].freeze
-XMAS_LEN = XMAS.count
+XMAS     = 'XMAS'.freeze
 
-def traverse(grid, x, y, length, &block)
-  (0...length).map do |_|
-    char = grid[x][y]
-    x, y = block.call(x, y)
-    char
-  end
-end
+DIRECTIONS = [
+  [0, 1], # right
+  [1, 0], # down
+  [1, 1], # diagonal down-right
+  [1, -1], # diagonal down-left
+  [0, -1], # left
+  [-1, 0], # up
+  [-1, -1], # diagonal up-left
+  [-1, 1] # diagonal up-right
+].freeze
 
-def left(grid, x, y)
-  return false if (x + 1 - XMAS_LEN).negative?
+HEIGHT.times do |row|
+  WIDTH.times do |col|
+    DIRECTIONS.each do |dr, dc|
+      next if (row + dr * 3).negative? || row + dr * 3 >= HEIGHT ||
+              (col + dc * 3).negative? || col + dc * 3 >= WIDTH
 
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x - 1, y] } == XMAS
-end
+      match      = XMAS.chars.each_with_index.all? do |char, i|
+        grid[row + dr * i][col + dc * i] == char
+      end
 
-def right(grid, x, y)
-  return false if x + XMAS_LEN > WIDTH
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x + 1, y] } == XMAS
-end
-
-def up(grid, x, y)
-  return false if (y + 1 - XMAS_LEN).negative?
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x, y - 1] } == XMAS
-end
-
-def down(grid, x, y)
-  return false if y + XMAS_LEN > HEIGHT
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x, y + 1] } == XMAS
-end
-
-def up_left(grid, x, y)
-  return false if (y + 1 - XMAS_LEN).negative? || (x + 1 - XMAS_LEN).negative?
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x - 1, y - 1] } == XMAS
-end
-
-def up_right(grid, x, y)
-  return false if (y + 1 - XMAS_LEN).negative? || x + XMAS_LEN > WIDTH
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x + 1, y - 1] } == XMAS
-end
-
-def down_left(grid, x, y)
-  return false if y + XMAS_LEN > HEIGHT || (x + 1 - XMAS_LEN).negative?
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x - 1, y + 1] } == XMAS
-end
-
-def down_right(grid, x, y)
-  return false if y + XMAS_LEN > HEIGHT || x + XMAS_LEN > WIDTH
-
-  traverse(grid, x, y, XMAS_LEN) { |x, y| [x + 1, y + 1] } == XMAS
-end
-
-def match_count(grid, x, y)
-  [
-    left(grid, x, y),
-    right(grid, x, y),
-    up(grid, x, y),
-    down(grid, x, y),
-    up_left(grid, x, y),
-    up_right(grid, x, y),
-    down_left(grid, x, y),
-    down_right(grid, x, y)
-  ].count(true)
-end
-
-(0...HEIGHT).each do |y|
-  (0...WIDTH).each do |x|
-    char = grid[x][y]
-    next unless char == 'X'
-
-    xmas_count += match_count(grid, x, y)
+      xmas_count += 1 if match
+    end
   end
 end
 
