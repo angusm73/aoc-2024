@@ -1,9 +1,11 @@
-input = File.readlines(File.join(File.dirname(__FILE__), './input'))
+require './lib/solution_helper'
+
+helper = SolutionHelper.new(dir: File.dirname(__FILE__))
 
 rules   = []
 updates = []
 
-input.each do |line|
+helper.input_lines.each do |line|
   rules << line.chomp.split('|').map(&:to_i) if line.include?('|')
   updates << line.chomp.split(',').map(&:to_i) if line.include?(',')
 end

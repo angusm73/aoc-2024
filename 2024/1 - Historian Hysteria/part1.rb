@@ -1,9 +1,11 @@
-ids = File.readlines(File.join(File.dirname(__FILE__), './input'))
+require './lib/solution_helper'
+
+helper = SolutionHelper.new(dir: File.dirname(__FILE__))
 
 list1 = []
 list2 = []
 
-ids.each do |id|
+helper.input_lines.each do |id|
   id1, id2 = id.split.map(&:to_i)
   list1 << id1
   list2 << id2

@@ -1,4 +1,6 @@
-reports = File.readlines(File.join(File.dirname(__FILE__), './input'))
+require './lib/solution_helper'
+
+helper = SolutionHelper.new(dir: File.dirname(__FILE__))
 
 class UnsafeLevels < StandardError; end
 
@@ -51,7 +53,7 @@ def safe?(levels)
   true
 end
 
-total_safe = reports.count do |report|
+total_safe = helper.input_lines.count do |report|
   levels = report.split.map(&:to_i)
   safe?(levels)
 end

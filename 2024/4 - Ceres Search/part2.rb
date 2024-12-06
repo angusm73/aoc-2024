@@ -1,9 +1,11 @@
-input = File.readlines(File.join(File.dirname(__FILE__), './input'))
+require './lib/solution_helper'
+
+helper = SolutionHelper.new(dir: File.dirname(__FILE__))
 
 grid       = []
 xmas_count = 0
 
-input.each do |line|
+helper.input_lines.each do |line|
   grid << line.chomp.chars
 end
 
