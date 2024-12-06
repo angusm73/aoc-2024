@@ -8,6 +8,7 @@ Dotenv.load
 Dotenv.require_keys('USER_AGENT', 'AOC_SESSION')
 
 class NotReadyError < StandardError; end
+
 class NotFoundError < StandardError; end
 
 # Helpers
@@ -30,6 +31,23 @@ module AdventOfCodeHelper
   end
 
   def challenge_name(year, day)
+    local_challenge_name(year, day) || online_challenge_name(year, day)
+  end
+
+  private
+
+  def get(uri)
+    Net::HTTP.get_response uri, { Cookie: AOC_COOKIE, "User-Agent": AOC_USER_AGENT }
+  end
+
+  def local_challenge_name(year, day)
+    prefix = "./#{year}/#{day} - "
+    names  = Dir.glob("#{prefix}*")
+
+    names.first.gsub(prefix, '') if names.any?
+  end
+
+  def online_challenge_name(year, day)
     uri      = URI.parse(format(CHALLENGE_URL, year, day))
     response = get(uri)
 
@@ -38,12 +56,6 @@ module AdventOfCodeHelper
 
     heading_matches = response.body.match(/--- (.*) ---/)
     heading_matches[1].split(': ').last if heading_matches
-  end
-
-  private
-
-  def get(uri)
-    Net::HTTP.get_response uri, { Cookie: AOC_COOKIE, "User-Agent": AOC_USER_AGENT }
   end
 
 end
