@@ -25,6 +25,7 @@ class AdventOfCodeCLI < Thor
   end
 
   desc 'runner DAY PART', 'Run solution for advent of code'
+  option :demo, type: :boolean, default: false
   def runner(day = Time.now.day, part = 1)
     year = options[:year]
     name = challenge_name(year, day)
@@ -35,7 +36,9 @@ class AdventOfCodeCLI < Thor
 
     raise NotFoundError, "#{file} does not exist" unless File.exist?(file)
 
-    puts `ruby "#{file}"`
+    env_var = 'DEMO=1 ' if options[:demo]
+
+    puts `#{env_var}ruby "#{file}"`
   end
 
   def self.exit_on_failure?
