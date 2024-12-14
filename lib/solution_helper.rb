@@ -17,10 +17,18 @@ class SolutionHelper
     File.readlines(input_filename)
   end
 
+  def demo?
+    !!ENV['DEMO']
+  end
+
+  def real?
+    !demo?
+  end
+
   private
 
   def input_filename
-    return File.join(solution_path, DEMO_INPUT_FILENAME) if ENV['DEMO']
+    return File.join(solution_path, DEMO_INPUT_FILENAME) if demo?
 
     File.join(solution_path, INPUT_FILENAME)
   end
