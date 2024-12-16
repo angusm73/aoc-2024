@@ -167,7 +167,7 @@ class ReindeerMazeSolver
 
       # Prune and sort
       queue.sort_by! { |state| state[:score] }
-      queue = queue.first(10_000)
+      queue = queue.first(100_000)
     end
 
     best_path_tiles.size
