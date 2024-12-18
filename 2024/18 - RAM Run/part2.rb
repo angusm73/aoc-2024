@@ -111,10 +111,11 @@ end
 size        = helper.demo? ? [6, 6] : [70, 70]
 nanoseconds = helper.demo? ? 12 : 1024
 
-maze = BitMaze.new(helper.input_lines, *size)
-path = maze.solution_path
-(nanoseconds..helper.input_lines.size).each do |count|
-  position = helper.input_lines[count - 1].split(',').map(&:to_i)
+lines = helper.input_lines
+maze  = BitMaze.new(lines, *size)
+path  = maze.solution_path
+(nanoseconds..lines.size).each do |count|
+  position = lines[count - 1].split(',').map(&:to_i)
   puts "New corruption (#{count}): #{position.join(',')}"
 
   next unless path&.include?(position.reverse)
